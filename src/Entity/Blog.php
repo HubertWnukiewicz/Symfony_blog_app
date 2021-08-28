@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\BlogRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -26,19 +27,6 @@ class Blog
      * @ORM\Column(type="datetime")
      */
     private $insert_date;
-
-
-    /**
-     * @param $id
-     * @param $text
-     * @param $insert_date
-     */
-    public function __construct($text, $insert_date)
-    {
-        $this->text = $text;
-        $this->insert_date = $insert_date;
-    }
-
 
     public function getId(): ?int
     {
