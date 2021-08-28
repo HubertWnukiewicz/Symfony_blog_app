@@ -15,17 +15,19 @@
         <table class="table table-striped table-hover table-bordered">
             <thead>
             <tr>
-                <th scope="col">#</th>
+                <th scope="col">Title</th>
                 <th scope="col">Text</th>
                 <th scope="col">Insert Date</th>
+                <th scope="col">Details</th>
             </tr>
             </thead>
             <tbody>
             {% for blog in blogs %}
                 <tr>
-                    <td>{{ blog.id }}</td>
+                    <td>{{ blog.title }}</td>
                     <td>{{ blog.text }}</td>
                     <td>{{ blog.insertDate |date('d-m-Y') }}</td>
+                    <td><a href="/"{{ blog.text }}</td>
                 </tr>
             {% endfor %}
             </tbody>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Helpers;
+namespace App\DataFixtures;
 
 use App\Entity\Blog;
 use DateTime;
@@ -24,6 +24,7 @@ class BlogContentFixture extends Fixture
         for ($i = 0; $i < self::RECORDS_TO_CREATE; $i++) {
             $blog = new Blog();
             $blog->setInsertDate(new DateTime());
+            $blog->setTitle("Generic title " . $i);
             $blog->setText($this->getLoremIpsumText());
             $manager->persist($blog);
         }

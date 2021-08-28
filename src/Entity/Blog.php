@@ -28,6 +28,11 @@ class Blog
      */
     private $insert_date;
 
+    /**
+     * @ORM\Column(type="string", length=128)
+     */
+    private $title;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -53,6 +58,18 @@ class Blog
     public function setInsertDate(\DateTimeInterface $insert_date): self
     {
         $this->insert_date = $insert_date;
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
 
         return $this;
     }
