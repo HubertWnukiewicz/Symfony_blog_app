@@ -48,11 +48,12 @@ class BlogController extends AbstractController
     public function addCommentToBlog(BlogRepository $blogRepository, Request $request)
     {
         $blog = $blogRepository->find(6);
-
+        $text = 'cccc';
 
         $comment = new BlogComment();
+        $insertTime = new DateTime();
         $comment->setInsertDate(new DateTime());
-        $comment->setText("aaaa");
+        $comment->setText($text);
         $comment->setBlogId($blog);
         $comment->setIsVisible(true);
         $blog->addBlogComment($comment);
@@ -63,8 +64,12 @@ class BlogController extends AbstractController
         $entityManager->flush();
 
         return new Response(
-            'Saved new comment with id: '.$comment->getId()
-            .' and new blog with id: '.$blog->getId()
+"            <div>
+                Insert Date: " . $insertTime->format('Y-m-d H:i:s')  . "
+            </div>
+            <div>
+               " . $text . "
+            </div>"
         );
     }
 }

@@ -14,6 +14,7 @@
         }
     </style>
 
+    <script src="{{ asset('js/blog_details.js')}}"></script>
     <div class="wrapper">
         <h1>{{ blog.title }}</h1>
         <div>Publication Date: {{ blog.insertDate |date('d-m-Y') }}</div>
@@ -21,11 +22,19 @@
         <div id ="blog_content">
             {{ blog.text }}
         </div>
-        <h1>Comments section:</h1>
+        <h1>Add new comment:</h1>
+        <div>
+            <textarea name="comment_text" id="comment_textarea" placeholder="Add comment"></textarea>
+        </div>
+        <div>
+            <button class="btn" onClick="addNewComment()">Submit comment</button>
+        </div>
+
+        <h1 id="comments_section_start">Comments section:</h1>
         {% for comment in comments %}
             {% if comment.isVisible == true %}
             <div>
-                Insert Date: {{ comment.insertDate |date('d-m-Y') }}
+                Insert Date: {{ comment.insertDate |date('Y-m-d H:i:s') }}
             </div>
             <div>
                 {{ comment.text }}
