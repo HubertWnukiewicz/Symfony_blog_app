@@ -21,5 +21,16 @@
         <div id ="blog_content">
             {{ blog.text }}
         </div>
+        <h1>Comments section:</h1>
+        {% for comment in comments %}
+            {% if comment.isVisible == true %}
+            <div>
+                Insert Date: {{ comment.insertDate |date('d-m-Y') }}
+            </div>
+            <div>
+                {{ comment.text }}
+            </div>
+            {% endif %}
+        {% endfor %}
     </div>
 {% endblock %}

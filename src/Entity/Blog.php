@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\BlogRepository;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -32,6 +34,16 @@ class Blog
      * @ORM\Column(type="string", length=128)
      */
     private $title;
+
+    /**
+     * @ORM\OneToMany(targetEntity=BlogComment::class, mappedBy="blog_id")
+     */
+    private $blogComments;
+
+    public function __construct()
+    {
+        $this->blogComments = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -70,6 +82,36 @@ class Blog
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|BlogComment[]
+     */
+    public function getBlogComments(): Collection
+    {
+        return $this->blogComments;
+    }
+
+    public function addBlogComment(BlogComment $blogComment): self
+    {
+        if (!$this->blogComments->contains($blogComment)) {
+            $this->blogComments[] = $blogComment;
+            $blogComment->setBlogId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBlogComment(BlogComment $blogComment): self
+    {
+        if ($this->blogComments->removeElement($blogComment)) {
+            // set the owning side to null (unless already changed)
+            if ($blogComment->getBlogId() === $this) {
+                $blogComment->setBlogId(null);
+            }
+        }
 
         return $this;
     }

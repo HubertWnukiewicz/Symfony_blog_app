@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\CommentRepository;
+use App\Repository\BlogCommentRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=CommentRepository::class)
+ * @ORM\Entity(repositoryClass=BlogCommentRepository::class)
  */
-class Comment
+class BlogComment
 {
     /**
      * @ORM\Id
@@ -18,14 +18,13 @@ class Comment
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
-     *
+     * @ORM\ManyToOne(targetEntity=Blog::class, inversedBy="blogComments")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $blog_id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @ORM\ManyToOne(targetEntity="Blog")
      */
     private $text;
 
@@ -34,17 +33,22 @@ class Comment
      */
     private $is_visible;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $insert_date;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getBlogId(): ?int
+    public function getBlogId(): ?Blog
     {
         return $this->blog_id;
     }
 
-    public function setBlogId(int $blog_id): self
+    public function setBlogId(?Blog $blog_id): self
     {
         $this->blog_id = $blog_id;
 
@@ -71,6 +75,18 @@ class Comment
     public function setIsVisible(bool $is_visible): self
     {
         $this->is_visible = $is_visible;
+
+        return $this;
+    }
+
+    public function getInsertDate(): ?\DateTimeInterface
+    {
+        return $this->insert_date;
+    }
+
+    public function setInsertDate(\DateTimeInterface $insert_date): self
+    {
+        $this->insert_date = $insert_date;
 
         return $this;
     }
