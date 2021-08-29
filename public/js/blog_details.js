@@ -17,7 +17,7 @@ $( document ).ready(function() {
     const dialogBlogContent = $( "#change_blog_content_form" ).dialog({
         autoOpen: false,
         height: 400,
-        width: 350,
+        width: 450,
         modal: true,
         buttons: {
             "Change content": changeBlogContent,
@@ -97,41 +97,79 @@ $( document ).ready(function() {
             }
         });
     }
-
-
-    function addNewComment()
-    {
-        //TODO: add loader-start
-        let textAreaValue = $('#comment_textarea').val();
-
-        if (textAreaValue.trim().length < 1) {
-            //TODO: additional validation on backend side
-            alert("You can't send empty comment!");
-            return;
-        }
-
-        $.ajax({
-            url:        '/blog/insert',
-            type:       'POST',
-            async:      true,
-            data:        { blogId: blogId, comment: textAreaValue },  // data to submit
-
-            success: function(data, status) {
-                //TODO: add loader-stop
-                let commentsSectionHeader = $('#comments_section_start');
-                $(data).insertAfter(commentsSectionHeader);
-                $('#comment_textarea').val("")
-            },
-            error : function(xhr, textStatus, errorThrown) {
-                //TODO: add loader-stop
-                alert('Ajax request failed.');
-            }
-        });
-    }
-
 });
 
 
+function addNewComment()
+{
+    //TODO: add loader-start
+    let textAreaValue = $('#comment_textarea').val();
 
+    if (textAreaValue.trim().length < 1) {
+        //TODO: additional validation on backend side
+        alert("You can't send empty comment!");
+        return;
+    }
+
+    $.ajax({
+        url:        '/blog/insert',
+        type:       'POST',
+        async:      true,
+        data:        { blogId: blogId, comment: textAreaValue },  // data to submit
+
+        success: function(data, status) {
+            //TODO: add loader-stop
+            let commentsSectionHeader = $('#comments_section_start');
+            $(data).insertAfter(commentsSectionHeader);
+            $('#comment_textarea').val("")
+        },
+        error : function(xhr, textStatus, errorThrown) {
+            //TODO: add loader-stop
+            alert('Ajax request failed.');
+        }
+    });
+}
+
+function hideComment(element, commentId)
+{
+    var button = $('#' + element.id);
+    $.ajax({
+        url:        '/comment/hide',
+        type:       'POST',
+        async:      true,
+        data:        { commentId: commentId},  // data to submit
+
+        success: function(data, status) {
+            //TODO: add loader-stop
+            button.attr("onClick","showComment(this, " + commentId + " )");
+            button.text('Show');
+        },
+        error : function(xhr, textStatus, errorThrown) {
+            //TODO: add loader-stop
+            alert('Ajax request failed.');
+        }
+    });
+}
+
+function showComment(element, commentId)
+{
+    var button = $('#' + element.id);
+    $.ajax({
+        url:        '/comment/show',
+        type:       'POST',
+        async:      true,
+        data:        { commentId: commentId},  // data to submit
+
+        success: function(data, status) {
+            //TODO: add loader-stop
+            button.attr("onClick","hideComment(this, " + commentId + " )");
+            button.text('Hide');
+        },
+        error : function(xhr, textStatus, errorThrown) {
+            //TODO: add loader-stop
+            alert('Ajax request failed.');
+        }
+    });
+}
 
 

@@ -12,15 +12,26 @@
             background: #71bcd7;
             color: white;
         }
+        .pageHeader {
+            margin: 0;
+            display: inline-block
+        }
+        .editButton {
+            vertical-align: text-bottom;
+        }
+        textarea {
+            min-height: 125px;
+            max-height: 250px;
+        }
     </style>
-
-    <script src="{{ asset('js/blog_details.js')}}"></script>
     <script> const blogId = {{ blog.id }};</script>
+    <script src="{{ asset('js/blog_details.js')}}"></script>
+
     <div class="wrapper">
         {% if not app.user %}
             <h1 class="display-3">{{ blog.title }}</h1>
         {% else %}
-            <h1 id="blog_title_header" class="display-3">{{ blog.title }} </h1> <button id="rename_title">Rename</button>
+            <div><h1 id="blog_title_header" class="display-3 pageHeader">{{ blog.title }} </h1> <button class ="editButton" id="rename_title">Rename</button></div>
         {% endif %}
         <div class="card mb-4 box-shadow">Publication Date: {{ blog.insertDate |date('d-m-Y') }}</div>
         <div id ="blog_content">
@@ -37,15 +48,31 @@
             </h1>
 
             {% for comment in comments %}
-                {% if comment.isVisible == true %}
+                {% if app.user %}
                     <div class ="card mb-4 box-shadow">
                         <div class ="my-0 font-weight-normal">
                             Insert Date: {{ comment.insertDate |date('Y-m-d H:i:s') }}
+                                {% if comment.isVisible == true %}
+                                    <button class ="editButton hideComment" id="comment_{{ comment.id }}" onClick="hideComment(this, {{ comment.id }})">Hide</button>
+                                {% else %}
+                                    <button class ="editButton showComment" id="comment_{{ comment.id }}" onClick="showComment(this, {{ comment.id }})">Show</button>
+                                {% endif %}
                         </div>
                         <div class="card-body comment">
                             {{ comment.text }}
                         </div>
                     </div>
+                {% else %}
+                    {% if comment.isVisible == true %}
+                        <div class ="card mb-4 box-shadow">
+                            <div class ="my-0 font-weight-normal">
+                                Insert Date: {{ comment.insertDate |date('Y-m-d H:i:s') }}
+                            </div>
+                            <div class="card-body comment">
+                                {{ comment.text }}
+                            </div>
+                        </div>
+                    {% endif %}
                 {% endif %}
             {% endfor %}
         </div>
@@ -77,9 +104,7 @@
     <div id="change_blog_content_form" title="Change blog content">
         <form>
             <fieldset>
-                <textarea name="blog_content" id="blog_content_input"  class="text ui-widget-content ui-corner-all">
-                    {{ blog.text }}
-                </textarea>
+                <textarea rows="3" class="form-control" name="blog_content" id="blog_content_input"  class="text ui-widget-content ui-corner-all">{{ blog.text }}</textarea>
                 <!-- Allow form submission with keyboard without duplicating the dialog button -->
                 <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
             </fieldset>
