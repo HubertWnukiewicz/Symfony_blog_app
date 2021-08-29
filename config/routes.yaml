@@ -6,6 +6,11 @@ login:
     path: /login
     controller: app\Controller\SecurityController::login
 
+logout:
+    path: /logout
+    controller: app\Controller\SecurityController::logout
+
+
 #app_blog_posts:
 #  path: /blog/posts
 #  controller: app\Controller\BlogController::getAll

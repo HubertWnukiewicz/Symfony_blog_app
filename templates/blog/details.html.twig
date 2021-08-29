@@ -8,19 +8,16 @@
             margin: 1em auto;
             width: 100%;
         }
-        div {
-            /*    border: 1px solid #000000;*/
-            margin: 8px;
-        }
-        h1 {
-            /*    border: 1px solid #000000;*/
-            margin: 8px;
-        }
     </style>
 
     <script src="{{ asset('js/blog_details.js')}}"></script>
+    <script> const blogId = {{ blog.id }};</script>
     <div class="wrapper">
-        <h1 class="display-3">{{ blog.title }}</h1>
+        {% if not app.user %}
+            <h1 class="display-3">{{ blog.title }}</h1>
+        {% else %}
+            <h1 id="blog_title_header" class="display-3">{{ blog.title }} </h1> <button id="rename-title">Rename</button>
+        {% endif %}
         <div class="card mb-4 box-shadow">Publication Date: {{ blog.insertDate |date('d-m-Y') }}</div>
         <div id ="blog_content">
             {{ blog.text }}
@@ -47,12 +44,29 @@
                 {% endif %}
             {% endfor %}
         </div>
-        <h1 class="display-3">Add new comment:</h1>
-        <div>
-            <textarea class="form-control" name="comment_text" id="comment_textarea" placeholder="Add comment" rows="3"></textarea>
-        </div>
-        <div>
-            <button class="btn btn-primary" onClick="addNewComment({{ blog.id }})">Submit comment</button>
-        </div>
+
+        {% if not app.user %}
+            <h1 class="display-3">Add new comment:</h1>
+            <div>
+                <textarea class="form-control" name="comment_text" id="comment_textarea" placeholder="Add comment" rows="3"></textarea>
+            </div>
+            <div>
+                <button class="btn btn-primary" onClick="addNewComment()">Submit comment</button>
+            </div>
+        {% endif %}
+
     </div>
+
+    <div id="change-title-form" title="Rename blog title">
+        <form>
+            <fieldset>
+                <label for="name">Title</label>
+                <input type="text" name="title" id="title_input" value="{{ blog.title }}" class="text ui-widget-content ui-corner-all">
+                <!-- Allow form submission with keyboard without duplicating the dialog button -->
+                <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+            </fieldset>
+        </form>
+    </div>
+
+
 {% endblock %}

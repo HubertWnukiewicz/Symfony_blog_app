@@ -76,4 +76,21 @@ class BlogController extends AbstractController
                         </div>"
         );
     }
+
+    /**
+     * @Route("/blog/changeTitle")
+     */
+    public function changeBlogTitle(BlogRepository $blogRepository, Request $request)
+    {
+        $blogId = $request->get('blogId');
+        $blog = $blogRepository->find($blogId);
+        $title = $request->get('title');
+        $blog->setTitle($title);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($blog);
+        $entityManager->flush();
+
+        return new Response($title);
+    }
 }
