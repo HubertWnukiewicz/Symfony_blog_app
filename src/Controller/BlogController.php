@@ -122,7 +122,6 @@ class BlogController extends AbstractController
         );
     }
 
-
     /**
      * @Route("/blog/insertNew")
      */
@@ -142,6 +141,7 @@ class BlogController extends AbstractController
 
         return new Response($blog->getId());
     }
+
     /**
      * @Route("/blog/search/direct")
      */
@@ -163,5 +163,34 @@ class BlogController extends AbstractController
                 'value' => $result->getId(),];
         }
         return new Response(json_encode($ret));
+    }
+
+    /**
+     * @Route("/blog/search/elastic")
+     */
+    public function elasticSearch(BlogRepository $blogRepository, Request $request): Response
+    {
+        $blogId = $request->get('blogId');
+        $term = $request->get('term');
+        $blog = $blogRepository->find($blogId);
+        $text = $blog->getText();
+        $ret = explode(" ",$text);
+
+        $retString = '<div>';
+        foreach ($ret as $word) {
+            similar_text($word, $term, $perc);
+            if ($perc < 75) {
+                $retString .= $word;
+            } else if ($perc >= 75 && $perc < 85) {
+                $retString .= '<span style="background: orange">' . $word .' </span>';
+            } else if ($perc >= 85 && $perc < 95) {
+                $retString .= '<span style="background: yellow">' . $word .' </span>';
+            } else {
+                $retString .= '<span style="background: green">' . $word .' </span>';
+            }
+            $retString .= ' ';
+        }
+        $retString .= '</div>';
+        return new Response($retString);
     }
 }

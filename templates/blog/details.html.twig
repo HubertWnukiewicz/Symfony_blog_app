@@ -9,7 +9,7 @@
             width: 960px;
         }
         .comment {
-            background: #71bcd7;
+            background: #3b5a67;
             color: white;
         }
         .pageHeader {
@@ -34,13 +34,17 @@
         {% if not app.user %}
             <h1 class="display-3">{{ blog.title }}</h1>
         {% else %}
-            <div><h1 id="blog_title_header" class="display-3 pageHeader">{{ blog.title }} </h1> <button class ="editButton" id="rename_title">Rename</button></div>
+            <div><h1 id="blog_title_header" class="display-3 pageHeader">{{ blog.title }} </h1> <button class="editButton btn btn-secondary" id="rename_title">Rename</button></div>
         {% endif %}
         <div class="card mb-4 box-shadow">Publication Date: {{ blog.insertDate |date('d-m-Y') }}</div>
-        <div id ="blog_content">
+        <form class="form-inline">
+            <input class="form-control mr-sm-2 " type="search" placeholder="Search" aria-label="Search" id="elasticSearch">
+            <button type="button" onClick="elasticSearch2()">Find word</button>
+        </form>
+        <div id ="blog_content" class="card mb-4 box-shadow">
             {{ blog.text }}
         </div>
-        <button id="edit_blog_content">Edit blog</button>
+            <button id="edit_blog_content" class="btn btn-secondary">Edit blog</button>
         <div>
             <h1 id="comments_section_start" class="display-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-chat-text" viewBox="0 0 16 16">

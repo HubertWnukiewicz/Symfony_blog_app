@@ -219,3 +219,28 @@ function addNewBlog()
     });
 }
 
+function elasticSearch2()
+{
+    let elasticSearch = $('#elasticSearch').val();
+
+    if (elasticSearch.trim().length < 1) {
+        alert("The input is empty!");
+        return;
+    }
+
+    $.ajax({
+        url:        '/blog/search/elastic',
+        type:       'POST',
+        async:      true,
+        data:        { blogId: blogId, term: elasticSearch},  // data to submit
+
+        success: function(data, status) {
+            $('#blog_content')[0].innerHTML = data;
+        },
+        error : function(xhr, textStatus, errorThrown) {
+            //TODO: add loader-stop
+            alert('Ajax request failed.');
+        }
+    });
+}
+
