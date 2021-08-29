@@ -45,7 +45,7 @@ class BlogController extends AbstractController
     /**
      * @Route("/blog/insert")
      */
-    public function addCommentToBlog(BlogRepository $blogRepository, Request $request)
+    public function addCommentToBlog(BlogRepository $blogRepository, Request $request): Response
     {
 
         $blogId = $request->get('blogId');
@@ -80,7 +80,7 @@ class BlogController extends AbstractController
     /**
      * @Route("/blog/changeTitle")
      */
-    public function changeBlogTitle(BlogRepository $blogRepository, Request $request)
+    public function changeBlogTitle(BlogRepository $blogRepository, Request $request): Response
     {
         $blogId = $request->get('blogId');
         $blog = $blogRepository->find($blogId);
@@ -92,5 +92,22 @@ class BlogController extends AbstractController
         $entityManager->flush();
 
         return new Response($title);
+    }
+
+    /**
+     * @Route("/blog/changeContent")
+     */
+    public function changeBlogContent(BlogRepository $blogRepository, Request $request): Response
+    {
+        $blogId = $request->get('blogId');
+        $blog = $blogRepository->find($blogId);
+        $newContent = $request->get('blogContent');
+        $blog->setText($newContent);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($blog);
+        $entityManager->flush();
+
+        return new Response($newContent);
     }
 }
