@@ -35,18 +35,10 @@ $( document ).ready(function() {
 
     //***************************************************************
 
-    // const formTitle = dialogTitle.find( "change_title_form" ).on("submit", function( event ) {
-    //     event.preventDefault();
-    // });
-    // const formBlogContent = dialogBlogContent.find( "change_blog_content_form" ).on("submit", function( event ) {
-    //     event.preventDefault();
-    // });
-
     function changeTitle()
     {
         let newTitle = $('#title_input').val();
         if (newTitle.trim().length < 1) {
-            //TODO: additional validation on backend side
             alert("You can't send empty title!");
             return;
         }
@@ -57,13 +49,11 @@ $( document ).ready(function() {
             data:        { blogId: blogId, title: newTitle },  // data to submit
 
             success: function(data, status) {
-                //TODO: add loader-stop
                 $('#title_input').val(data);
                 $('#blog_title_header').innerText = data;
                 dialogTitle.dialog( "close" );
             },
             error : function(xhr, textStatus, errorThrown) {
-                //TODO: add loader-stop
                 alert('Ajax request failed.');
             }
         });
@@ -73,7 +63,6 @@ $( document ).ready(function() {
     {
         let newContent = $('#blog_content_input').val();
         if (newContent.trim().length < 1) {
-            //TODO: additional validation on backend side
             alert("You can't send empty title!");
             return;
         }
@@ -90,7 +79,6 @@ $( document ).ready(function() {
                 dialogBlogContent.dialog( "close" );
             },
             error : function(xhr, textStatus, errorThrown) {
-                //TODO: add loader-stop
                 alert('Ajax request failed.');
             }
         });
@@ -101,11 +89,9 @@ $( document ).ready(function() {
 
 function addNewComment()
 {
-    //TODO: add loader-start
     let textAreaValue = $('#comment_textarea').val();
 
     if (textAreaValue.trim().length < 1) {
-        //TODO: additional validation on backend side
         alert("You can't send empty comment!");
         return;
     }
@@ -117,13 +103,11 @@ function addNewComment()
         data:        { blogId: blogId, comment: textAreaValue },  // data to submit
 
         success: function(data, status) {
-            //TODO: add loader-stop
             let commentsSectionHeader = $('#comments_section_start');
             $(data).insertAfter(commentsSectionHeader);
             $('#comment_textarea').val("")
         },
         error : function(xhr, textStatus, errorThrown) {
-            //TODO: add loader-stop
             alert('Ajax request failed.');
         }
     });
@@ -139,12 +123,10 @@ function hideComment(element, commentId)
         data:        { commentId: commentId},  // data to submit
 
         success: function(data, status) {
-            //TODO: add loader-stop
             button.attr("onClick","showComment(this, " + commentId + " )");
             button.text('Show');
         },
         error : function(xhr, textStatus, errorThrown) {
-            //TODO: add loader-stop
             alert('Ajax request failed.');
         }
     });
@@ -160,12 +142,10 @@ function showComment(element, commentId)
         data:        { commentId: commentId},  // data to submit
 
         success: function(data, status) {
-            //TODO: add loader-stop
             button.attr("onClick","hideComment(this, " + commentId + " )");
             button.text('Hide');
         },
         error : function(xhr, textStatus, errorThrown) {
-            //TODO: add loader-stop
             alert('Ajax request failed.');
         }
     });
@@ -182,7 +162,6 @@ function removeComment(commentId)
             $('#comment_section_' +commentId).remove();
         },
         error : function(xhr, textStatus, errorThrown) {
-            //TODO: add loader-stop
             alert('Ajax request failed.');
         }
     });
@@ -213,7 +192,6 @@ function addNewBlog()
             window.location = "/blog/details/" + data;
         },
         error : function(xhr, textStatus, errorThrown) {
-            //TODO: add loader-stop
             alert('Ajax request failed.');
         }
     });
@@ -238,7 +216,6 @@ function elasticSearch2()
             $('#blog_content')[0].innerHTML = data;
         },
         error : function(xhr, textStatus, errorThrown) {
-            //TODO: add loader-stop
             alert('Ajax request failed.');
         }
     });
