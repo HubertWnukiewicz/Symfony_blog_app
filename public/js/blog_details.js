@@ -187,5 +187,35 @@ function removeComment(commentId)
         }
     });
 }
+function addNewBlog()
+{
+    let title = $('#title').val();
 
+    if (title.trim().length < 1) {
+        alert("You can't add post with empty title!");
+        return;
+    }
+
+    let content = $('#content').val();
+
+    if (content.trim().length < 1) {
+        alert("You can't add empty blog!");
+        return;
+    }
+
+    $.ajax({
+        url:        '/blog/insertNew',
+        type:       'POST',
+        async:      true,
+        data:        { title: title, content: content},  // data to submit
+
+        success: function(data, status) {
+            window.location = "/blog/details/" + data;
+        },
+        error : function(xhr, textStatus, errorThrown) {
+            //TODO: add loader-stop
+            alert('Ajax request failed.');
+        }
+    });
+}
 

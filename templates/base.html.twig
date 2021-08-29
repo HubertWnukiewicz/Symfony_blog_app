@@ -21,29 +21,36 @@
 </head>
 <body>
 <div class="">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
         <a class="nav-link" href="{{ path('index') }}"><span class="sr-only">Homepage</span></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
+        <div id="navbarSupportedContent" class="navbar-nav form-inline">
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2 " type="search" placeholder="Search" aria-label="Search">
+            </form>
+            <ul class="navbar-nav me-auto">
+                {% if app.user %}
+                    <li class="nav-item active">
+                        <a class="nav-link my-2 my-lg-0 navbar-brand" href="{{ path('addNewBlog') }}">
+                            <span class="sr-only">Create new blog post</span>
+                        </a>
+                    </li>
+                {% endif %}
                 <li class="nav-item active">
                     {% if app.user %}
-                        <a class="nav-link" href="{{ path('logout') }}">
+                        <a class="nav-link my-2 my-lg-0 navbar-brand" href="{{ path('logout') }}">
                             <span class="sr-only">Logout</span>
                         </a>
                     {% else %}
-                        <a class="nav-link" href="{{ path('login') }}">
+                        <a class="nav-link my-2 my-lg-0 navbar-brand" href="{{ path('login') }}">
                             <span class="sr-only">Login</span>
                         </a>
                     {% endif %}
                 </li>
             </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2 " type="search" placeholder="Search" aria-label="Search">
-            </form>
         </div>
     </nav>
 </div>

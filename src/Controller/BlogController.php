@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Blog;
 use App\Entity\BlogComment;
 use App\Repository\BlogRepository;
 use DateTime;
@@ -109,5 +110,36 @@ class BlogController extends AbstractController
         $entityManager->flush();
 
         return new Response($newContent);
+    }
+
+    /**
+     * @Route("/blog/add", name="add_new_blog")
+     */
+    public function addNewBlogPage(BlogRepository $blogRepository) : Response
+    {
+        return $this->render(
+            'blog/add.html.twig'
+        );
+    }
+
+
+    /**
+     * @Route("/blog/insertNew")
+     */
+    public function addNewBlog(BlogRepository $blogRepository, Request $request): Response
+    {
+        $title = $request->get('title');
+        $content = $request->get('content');
+        $blog = new Blog();
+        $blog->setText($content);
+        $blog->setTitle($title);
+        $blog->setInsertDate(new DateTime());
+
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($blog);
+        $entityManager->flush();
+
+        return new Response($blog->getId());
     }
 }

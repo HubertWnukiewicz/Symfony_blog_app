@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Details{% endblock %}
+
+{% block body %}
+    <style>
+        .wrapper {
+            margin: 1em auto;
+            width: 960px;
+        }
+        textarea {
+            min-height: 125px;
+            max-height: 250px;
+        }
+        button {
+            margin-top: 5px;
+        }
+    </style>
+    <script src="{{ asset('js/blog_details.js')}}"></script>
+
+    <div class="wrapper">
+        <div id="add_new_form" title="Rename blog title">
+            <h1 id="blog_title_header" class="display-3 pageHeader">Add new blog post!</h1>
+            <form>
+                <fieldset>
+                    <div>
+                        <label for="name">Blog Title: </label>
+                    </div>
+                        <input type="text" name="title" id="title" class="form-control text ui-widget-content ui-corner-all">
+                    <label for="name">Blog Content: </label>
+                    <textarea rows="3" class="form-control" name="content" id="content" class="form-control text ui-widget-content ui-corner-all"></textarea>
+                    <button type="button" class="btn btn-primary" onClick="addNewBlog()">Submit</button>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

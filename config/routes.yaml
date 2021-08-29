@@ -10,6 +10,9 @@ logout:
     path: /logout
     controller: app\Controller\SecurityController::logout
 
+addNewBlog:
+    path: /blog/add
+    controller: app\Controller\BlogController::addNewBlogPage
 
 #app_blog_posts:
 #  path: /blog/posts
