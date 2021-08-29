@@ -142,4 +142,26 @@ class BlogController extends AbstractController
 
         return new Response($blog->getId());
     }
+    /**
+     * @Route("/blog/search/direct")
+     */
+    public function directSearch(BlogRepository $blogRepository, Request $request): Response
+    {
+        $word = $request->get('term');
+        $ret = [];
+        $results = $blogRepository->createQueryBuilder('b')
+            ->where('b.title LIKE :word')
+            ->orWhere('b.text LIKE :word')
+            ->setParameter('word', '%' . $word . '%')
+            ->getQuery()
+            ->getResult();
+
+        foreach($results as $result) {
+            $ret[] = [
+                'id' => $result->getId(),
+                'label' => $result->getTitle(),
+                'value' => $result->getId(),];
+        }
+        return new Response(json_encode($ret));
+    }
 }
