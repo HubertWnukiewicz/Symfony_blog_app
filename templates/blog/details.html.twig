@@ -23,6 +23,9 @@
             min-height: 125px;
             max-height: 250px;
         }
+        .date {
+            vertical-align: super;
+        }
     </style>
     <script> const blogId = {{ blog.id }};</script>
     <script src="{{ asset('js/blog_details.js')}}"></script>
@@ -49,14 +52,15 @@
 
             {% for comment in comments %}
                 {% if app.user %}
-                    <div class ="card mb-4 box-shadow">
+                    <div id="comment_section_{{ comment.id }}" class ="card mb-4 box-shadow">
                         <div class ="my-0 font-weight-normal">
-                            Insert Date: {{ comment.insertDate |date('Y-m-d H:i:s') }}
+                            <span class="date">Insert Date: {{ comment.insertDate |date('Y-m-d H:i:s') }}</span>
                                 {% if comment.isVisible == true %}
-                                    <button class ="editButton hideComment" id="comment_{{ comment.id }}" onClick="hideComment(this, {{ comment.id }})">Hide</button>
+                                    <button class ="editButton hideComment btn btn-secondary" id="comment_{{ comment.id }}" onClick="hideComment(this, {{ comment.id }})">Hide</button>
                                 {% else %}
-                                    <button class ="editButton showComment" id="comment_{{ comment.id }}" onClick="showComment(this, {{ comment.id }})">Show</button>
+                                    <button class ="editButton showComment btn btn-secondary" id="comment_{{ comment.id }}" onClick="showComment(this, {{ comment.id }})">Show</button>
                                 {% endif %}
+                            <button class ="editButton btn btn-danger"  onClick="removeComment({{ comment.id }})">Remove</button>
                         </div>
                         <div class="card-body comment">
                             {{ comment.text }}
@@ -66,7 +70,7 @@
                     {% if comment.isVisible == true %}
                         <div class ="card mb-4 box-shadow">
                             <div class ="my-0 font-weight-normal">
-                                Insert Date: {{ comment.insertDate |date('Y-m-d H:i:s') }}
+                                <span class="date">Insert Date: {{ comment.insertDate |date('Y-m-d H:i:s') }}</span>
                             </div>
                             <div class="card-body comment">
                                 {{ comment.text }}

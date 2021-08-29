@@ -1,5 +1,5 @@
 $( document ).ready(function() {
-
+    //***************************************************************
     const dialogTitle = $( "#change_title_form" ).dialog({
         autoOpen: false,
         height: 400,
@@ -13,7 +13,6 @@ $( document ).ready(function() {
         },
 
     });
-
     const dialogBlogContent = $( "#change_blog_content_form" ).dialog({
         autoOpen: false,
         height: 400,
@@ -30,19 +29,18 @@ $( document ).ready(function() {
         // }
     });
 
-    const formTitle = dialogTitle.find( "change_title_form" ).on("submit", function( event ) {
-        event.preventDefault();
-    });
-    const formBlogContent = dialogBlogContent.find( "change_blog_content_form" ).on("submit", function( event ) {
-        event.preventDefault();
-    });
-
-    $("#rename_title").button().on( "click", function() {
-        dialogTitle.dialog( "open" );
-    });
     $("#edit_blog_content").button().on( "click", function() {
         dialogBlogContent.dialog( "open" );
     });
+
+    //***************************************************************
+
+    // const formTitle = dialogTitle.find( "change_title_form" ).on("submit", function( event ) {
+    //     event.preventDefault();
+    // });
+    // const formBlogContent = dialogBlogContent.find( "change_blog_content_form" ).on("submit", function( event ) {
+    //     event.preventDefault();
+    // });
 
     function changeTitle()
     {
@@ -97,6 +95,7 @@ $( document ).ready(function() {
             }
         });
     }
+
 });
 
 
@@ -164,6 +163,23 @@ function showComment(element, commentId)
             //TODO: add loader-stop
             button.attr("onClick","hideComment(this, " + commentId + " )");
             button.text('Hide');
+        },
+        error : function(xhr, textStatus, errorThrown) {
+            //TODO: add loader-stop
+            alert('Ajax request failed.');
+        }
+    });
+}
+function removeComment(commentId)
+{
+    $.ajax({
+        url:        '/comment/remove',
+        type:       'POST',
+        async:      true,
+        data:        { commentId: commentId },  // data to submit
+
+        success: function(data, status) {
+            $('#comment_section_' +commentId).remove();
         },
         error : function(xhr, textStatus, errorThrown) {
             //TODO: add loader-stop
