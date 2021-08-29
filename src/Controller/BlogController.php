@@ -14,7 +14,7 @@ class BlogController extends AbstractController
 {
 //    #[Route('/blog', name: 'blog')]
     /**
-     * @Route("/blog", name="blog")
+     * @Route("/", name="blogs")
      */
     public function index(BlogRepository $blogRepository) : Response
     {

@@ -1,7 +1,11 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+index:
+    path: /
+    controller: app\Controller\BlogController::index
 
-app_blog_posts:
-  path: /blog/posts
-  controller: app\Controller\BlogPostsController::getAll
+login:
+    path: /login
+    controller: app\Controller\SecurityController::login
+
+#app_blog_posts:
+#  path: /blog/posts
+#  controller: app\Controller\BlogController::getAll
