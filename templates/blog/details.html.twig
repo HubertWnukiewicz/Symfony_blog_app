@@ -26,6 +26,11 @@
         .date {
             vertical-align: super;
         }
+        .blogContent{
+            min-height: 100px;
+            margin-top: 10px;
+            background: #d1d2d7;
+        }
     </style>
     <script> const blogId = {{ blog.id }};</script>
     <script src="{{ asset('js/blog_details.js')}}"></script>
@@ -37,15 +42,23 @@
             <div><h1 id="blog_title_header" class="display-3 pageHeader">{{ blog.title }} </h1> <button class="editButton btn btn-secondary" id="rename_title">Rename</button></div>
         {% endif %}
         <div class="card mb-4 box-shadow">Publication Date: {{ blog.insertDate |date('d-m-Y') }}</div>
-        <form class="form-inline">
-            <input class="form-control mr-sm-2 " type="search" placeholder="Search" aria-label="Search" id="elasticSearch">
-            <button type="button" onClick="elasticSearch2()">Find word</button>
-        </form>
-        <div id ="blog_content" class="card mb-4 box-shadow">
+        <div style="display: inline-flex;">
+            <div>
+                <input class="form-control mr-sm-2 " type="search" placeholder="Search" aria-label="Search" id="elasticSearch">
+            </div>
+            <div>
+                <button type="button" onClick="elasticSearch2()" class="btn btn-secondary">Find word</button>
+            </div>
+
+        </div>
+        <div id ="blog_content" class="card mb-4 box-shadow blogContent">
             {{ blog.text }}
         </div>
-            <button id="edit_blog_content" class="btn btn-secondary">Edit blog</button>
+            {% if app.user %}
         <div>
+            <button id="edit_blog_content" class="btn btn-secondary">Edit blog</button>
+        </div>
+            {% endif %}
             <h1 id="comments_section_start" class="display-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-chat-text" viewBox="0 0 16 16">
                     <path d="M2.678 11.894a1 1 0 0 1 .287.801 10.97 10.97 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8.06 8.06 0 0 0 8 14c3.996 0 7-2.807 7-6 0-3.192-3.004-6-7-6S1 4.808 1 8c0 1.468.617 2.83 1.678 3.894zm-.493 3.905a21.682 21.682 0 0 1-.713.129c-.2.032-.352-.176-.273-.362a9.68 9.68 0 0 0 .244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.52.263-1.639.742-3.468 1.105z"/>
@@ -53,17 +66,17 @@
                 </svg>
                 Comments section:
             </h1>
-
+        {% if comments is not empty %}
             {% for comment in comments %}
                 {% if app.user %}
                     <div id="comment_section_{{ comment.id }}" class ="card mb-4 box-shadow">
                         <div class ="my-0 font-weight-normal">
                             <span class="date">Insert Date: {{ comment.insertDate |date('Y-m-d H:i:s') }}</span>
-                                {% if comment.isVisible == true %}
-                                    <button class ="editButton hideComment btn btn-secondary" id="comment_{{ comment.id }}" onClick="hideComment(this, {{ comment.id }})">Hide</button>
-                                {% else %}
-                                    <button class ="editButton showComment btn btn-secondary" id="comment_{{ comment.id }}" onClick="showComment(this, {{ comment.id }})">Show</button>
-                                {% endif %}
+                            {% if comment.isVisible == true %}
+                                <button class ="editButton hideComment btn btn-secondary" id="comment_{{ comment.id }}" onClick="hideComment(this, {{ comment.id }})">Hide</button>
+                            {% else %}
+                                <button class ="editButton showComment btn btn-secondary" id="comment_{{ comment.id }}" onClick="showComment(this, {{ comment.id }})">Show</button>
+                            {% endif %}
                             <button class ="editButton btn btn-danger"  onClick="removeComment({{ comment.id }})">Remove</button>
                         </div>
                         <div class="card-body comment">
@@ -83,8 +96,9 @@
                     {% endif %}
                 {% endif %}
             {% endfor %}
-        </div>
-
+        {% else %}
+        <div id="comments_section_empty" class="alert alert-danger">The comment section is empty</div>
+        {% endif %}
         {% if not app.user %}
             <h1 class="display-3">Add new comment:</h1>
             <div>
@@ -94,8 +108,8 @@
                 <button class="btn btn-primary" onClick="addNewComment()">Submit comment</button>
             </div>
         {% endif %}
-
     </div>
+
 
     <div id="change_title_form" title="Rename blog title">
         <form>

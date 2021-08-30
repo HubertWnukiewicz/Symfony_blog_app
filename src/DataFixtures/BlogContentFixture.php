@@ -13,7 +13,7 @@ class BlogContentFixture extends Fixture
     /**
      * Const to store how many records should be created
      */
-    CONST RECORDS_TO_CREATE = 5;
+    CONST RECORDS_TO_CREATE = 20;
 
     /**
      * @param ObjectManager $manager

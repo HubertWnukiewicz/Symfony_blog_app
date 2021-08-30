@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class BlogController extends AbstractController
 {
-//    #[Route('/blog', name: 'blog')]
+
     /**
      * @Route("/", name="blogs")
      */
@@ -71,7 +71,7 @@ class BlogController extends AbstractController
             <div class='my-0 font-weight-normal'>
                 Insert Date: " . $insertTime->format('Y-m-d H:i:s')  . "
             </div>
-            <div class='card-body'>
+            <div class='card-body comment'>
                " . $text . "
             </div>
                         </div>"
@@ -83,14 +83,17 @@ class BlogController extends AbstractController
      */
     public function changeBlogTitle(BlogRepository $blogRepository, Request $request): Response
     {
-        $blogId = $request->get('blogId');
-        $blog = $blogRepository->find($blogId);
         $title = $request->get('title');
-        $blog->setTitle($title);
+        if ($title != '') {
+            $blogId = $request->get('blogId');
+            $blog = $blogRepository->find($blogId);
+            $blog->setTitle($title);
 
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($blog);
-        $entityManager->flush();
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($blog);
+            $entityManager->flush();
+        }
+
 
         return new Response($title);
     }
@@ -160,7 +163,8 @@ class BlogController extends AbstractController
             $ret[] = [
                 'id' => $result->getId(),
                 'label' => $result->getTitle(),
-                'value' => $result->getId(),];
+                'value' => $result->getId()
+            ];
         }
         return new Response(json_encode($ret));
     }
@@ -178,7 +182,9 @@ class BlogController extends AbstractController
 
         $retString = '<div>';
         foreach ($ret as $word) {
-            similar_text($word, $term, $perc);
+            //remove special chars to increase the level of accuracy
+            $wordToCheck = preg_replace('/[^A-Za-z0-9\-]/', '', $word);
+            similar_text($wordToCheck, $term, $perc);
             if ($perc < 75) {
                 $retString .= $word;
             } else if ($perc >= 75 && $perc < 85) {

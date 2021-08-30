@@ -29,10 +29,6 @@ $( document ).ready(function() {
         // }
     });
 
-    $("#edit_blog_content").button().on( "click", function() {
-        dialogBlogContent.dialog( "open" );
-    });
-
     //***************************************************************
 
     function changeTitle()
@@ -50,7 +46,7 @@ $( document ).ready(function() {
 
             success: function(data, status) {
                 $('#title_input').val(data);
-                $('#blog_title_header').innerText = data;
+                $('#blog_title_header')[0].innerText = data;
                 dialogTitle.dialog( "close" );
             },
             error : function(xhr, textStatus, errorThrown) {
@@ -73,7 +69,6 @@ $( document ).ready(function() {
             data:        { blogId: blogId, blogContent: newContent },  // data to submit
 
             success: function(data, status) {
-                //TODO: add loader-stop
                 $('#blog_content')[0].innerHTML = data;
                 $('#blog_content_input').val(data);
                 dialogBlogContent.dialog( "close" );
@@ -83,7 +78,13 @@ $( document ).ready(function() {
             }
         });
     }
+    $("#edit_blog_content").button().on( "click", function() {
+        dialogBlogContent.dialog( "open" );
+    });
 
+    $("#rename_title").button().on( "click", function() {
+        dialogTitle.dialog( "open" );
+    });
 });
 
 
@@ -105,7 +106,8 @@ function addNewComment()
         success: function(data, status) {
             let commentsSectionHeader = $('#comments_section_start');
             $(data).insertAfter(commentsSectionHeader);
-            $('#comment_textarea').val("")
+            $('#comment_textarea').val("");
+            $('#comments_section_empty').remove();
         },
         error : function(xhr, textStatus, errorThrown) {
             alert('Ajax request failed.');
