@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Blogs{% endblock %}
+
+{% block body %}
+    <style>
+        .wrapper {
+            margin: 1em auto;
+            width: 95%;
+        }
+        .highlight {
+            background-color: yellow;
+        }
+    </style>
+    <div>User Info: </div>
+    <div>ID: {{ user.id }}</div>
+    <div>Username: {{ user.username }}</div>
+    <div>Left blog limits this month: {{ userLimits }}</div>
+{% endblock %}

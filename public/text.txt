@@ -1,0 +1,19 @@
+
+user_payments
+Cols:
+    1) user_id                         => admin
+    2) purchase_day (timestamp)        => today
+    3) package_type (id)               => 1
+
+Blog_limits:
+    1) user_id
+    2) month/year
+    3) current_limit
+
+package_type:
+    1) id
+    2) name
+    3) price
+    4) limit -> how much blogs is avaiable ein this package
+    5) int -> to store how much of it you can buy each month
+

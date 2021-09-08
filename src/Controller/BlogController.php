@@ -137,7 +137,6 @@ class BlogController extends AbstractController
         $blog->setTitle($title);
         $blog->setInsertDate(new DateTime());
 
-
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($blog);
         $entityManager->flush();
